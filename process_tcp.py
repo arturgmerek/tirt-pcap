@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import dpkt
 import socket_manager as sm
 
 
@@ -11,11 +12,15 @@ def process_tcp():
     # s_out.connect((sm.TCP_IP, 5007))
 
     while 1:
-        tcp = conn.recv(sm.BUFFER_SIZE)
+        pkt = conn.recv(sm.BUFFER_SIZE)
+        eth = dpkt.ethernet.Ethernet(pkt)
+        ip = eth.data
+        tcp = ip.data
         if not tcp:
             conn.close()
             break
-        print(tcp)
+        if type(ip.data) == dpkt.tcp.TCP:
+            print(tcp)
 
 
 if __name__ == '__main__':

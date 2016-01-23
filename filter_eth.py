@@ -24,7 +24,7 @@ def filter_eth():
         eth = dpkt.ethernet.Ethernet(pkt)
         pc.data_eth_route(print_packets.mac_addr(eth.src), print_packets.mac_addr(eth.dst))
         pc.data_eth_type(str(eth.type))
-        s_out.send(eth.data)
+        s_out.send(pkt)
 
 
 if __name__ == '__main__':
