@@ -5,7 +5,7 @@ import socket_manager as sm
 import pygal_charts as pc
 
 
-def filter_ip_route():
+def filter_eth():
     s_in = sm.get_and_bind_socket()
     s_in.listen(1)
     conn, address = s_in.accept()
@@ -16,19 +16,16 @@ def filter_ip_route():
     while 1:
         pkt = conn.recv(sm.BUFFER_SIZE)
         if not pkt:
-            pc.chart_ip_route()
+            pc.chart_eth_route()
+            pc.chart_eth_type()
             conn.close()
             s_out.close()
             break
-        ip_route(pkt)
-        s_out.send(pkt)
-
-
-def ip_route(data):
-    eth = dpkt.ethernet.Ethernet(data)
-    ip = eth.data
-    pc.data_ip_route(print_packets.ip_to_str(ip.src), print_packets.ip_to_str(ip.dst))
+        eth = dpkt.ethernet.Ethernet(pkt)
+        pc.data_eth_route(print_packets.mac_addr(eth.src), print_packets.mac_addr(eth.dst))
+        pc.data_eth_type(str(eth.type))
+        s_out.send(eth.data)
 
 
 if __name__ == '__main__':
-    filter_ip_route()
+    filter_eth()
