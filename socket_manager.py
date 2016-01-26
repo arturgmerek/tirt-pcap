@@ -4,7 +4,7 @@ import socket
 TCP_IP = '127.0.0.1'
 TCP_PORT = 5005
 TCP_TUPLE = (TCP_IP, TCP_PORT)
-BUFFER_SIZE = 4096
+BUFFER_SIZE = 8192
 
 
 def get_socket():

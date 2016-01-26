@@ -9,8 +9,8 @@ if __name__ == '__main__':
         subprocess.Popen(['python', 'filter_eth.py'])  # port_in: 5005 port_out: 5006
         subprocess.Popen(['python', 'pcap_loader.py'])  # port_out: 5005
         out, err = s.communicate()
-        print(out)
-        print(err)
+        print("4o --------------------\n" + out)
+        print("4e --------------------\n" + err)
     except OSError as e:
         print("OSError: ", e.message)
     except ValueError as e:

@@ -85,7 +85,6 @@ def data_eth_type(eth_type):
     global ETH_TYPE
 
     ETH_TYPE.append(eth_type)
-    print (eth_type)
 
 
 def chart_eth_type():

@@ -4,6 +4,7 @@ import socket_manager as sm
 
 
 def process_tcp():
+    packets = 0
     s_in = sm.get_and_bind_socket(5007)
     s_in.listen(1)
     conn, address = s_in.accept()
@@ -12,15 +13,23 @@ def process_tcp():
     # s_out.connect((sm.TCP_IP, 5007))
 
     while 1:
-        pkt = conn.recv(sm.BUFFER_SIZE)
-        eth = dpkt.ethernet.Ethernet(pkt)
-        ip = eth.data
-        tcp = ip.data
-        if not tcp:
-            conn.close()
-            break
-        if type(ip.data) == dpkt.tcp.TCP:
-            print(tcp)
+        try:
+            pkt = conn.recv(sm.BUFFER_SIZE)
+            if not pkt:
+                conn.close()
+                break
+            eth = dpkt.ethernet.Ethernet(pkt)
+            ip = eth.data
+            tcp = ip.data
+            http = dpkt.http.Response(tcp.data)
+            print("\nHttp.status: " + http.status)
+
+        except dpkt.UnpackError:  # https://github.com/kbandla/dpkt/issues/122
+            packets += 1
+            pass
+        except AttributeError:
+            pass
+    print(packets)
 
 
 if __name__ == '__main__':
