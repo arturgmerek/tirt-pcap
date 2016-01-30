@@ -6,7 +6,6 @@ import pygal_charts as pc
 
 
 def filter_eth():
-    packets = 0
     s_in = sm.get_and_bind_socket()
     s_in.listen(1)
     conn, address = s_in.accept()
@@ -23,13 +22,10 @@ def filter_eth():
             conn.close()
             s_out.close()
             break
-        packets += 1
         eth = dpkt.ethernet.Ethernet(pkt)
         pc.data_eth_route(print_packets.mac_addr(eth.src), print_packets.mac_addr(eth.dst))
         pc.data_eth_type(str(eth.type))
         s_out.send(pkt)
-
-    print(packets)
 
 
 if __name__ == '__main__':

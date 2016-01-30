@@ -4,14 +4,12 @@ import socket_manager as sm
 
 
 def load_and_filter_tcp():
-    packets = 0
     f = open('log.pcap', 'rb')
     p = dpkt.pcap.Reader(f)
     s = sm.get_socket()
     s.connect(sm.TCP_TUPLE)
 
     for ts, pkt in p:
-        packets += 1
         try:
             eth = dpkt.ethernet.Ethernet(pkt)
             ip = eth.data
@@ -23,7 +21,6 @@ def load_and_filter_tcp():
 
     s.close()
     f.close()
-    print(packets)
 
 
 if __name__ == '__main__':

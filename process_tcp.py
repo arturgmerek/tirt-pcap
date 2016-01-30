@@ -21,12 +21,9 @@ def process_tcp():
             eth = dpkt.ethernet.Ethernet(pkt)
             ip = eth.data
             tcp = ip.data
-            http = dpkt.http.Response(tcp.data)
-            print("\nHttp.status: " + http.status)
+            # http = dpkt.http.Response(tcp.data)
+            print(tcp)
 
-        except dpkt.UnpackError:  # https://github.com/kbandla/dpkt/issues/122
-            packets += 1
-            pass
         except AttributeError:
             pass
     print(packets)

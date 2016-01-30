@@ -6,7 +6,6 @@ import pygal_charts as pc
 
 
 def filter_ip():
-    packets = 0
     s_in = sm.get_and_bind_socket(5006)
     s_in.listen(1)
     conn, address = s_in.accept()
@@ -24,7 +23,6 @@ def filter_ip():
                 conn.close()
                 s_out.close()
                 break
-            packets += 1
             eth = dpkt.ethernet.Ethernet(pkt)
             ip = eth.data
             pc.data_ip_route(print_packets.ip_to_str(ip.src), print_packets.ip_to_str(ip.dst))
@@ -32,7 +30,6 @@ def filter_ip():
             s_out.send(pkt)
         except AttributeError:
             pass
-    print(packets)
 
 
 if __name__ == '__main__':
