@@ -17,7 +17,7 @@ def process_tcp():
             eth = dpkt.ethernet.Ethernet(pkt)
             ip = eth.data
             tcp = ip.data
-            # http = dpkt.http.Response(tcp.data)
+            print tcp.sport
         except AttributeError:
             pass
 
